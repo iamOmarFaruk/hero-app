@@ -268,25 +268,25 @@ function AppNotFound() {
 
   return (
     <div className="min-h-screen bg-gray-50 flex items-center justify-center">
-      <div className="text-center px-6">
+      <div className="text-center px-6 md:px-10 w-full max-w-lg mx-auto">
         <div className="mb-8">
-          <div className="text-8xl mb-4">📱</div>
-          <h1 className="text-3xl font-bold text-gray-900 mb-4">App Not Found</h1>
+          <div className="text-7xl md:text-8xl mb-4">📱</div>
+          <h1 className="text-2xl md:text-3xl font-bold text-gray-900 mb-4">App Not Found</h1>
           <p className="text-lg text-gray-600 mb-8">
             Sorry, the app you're looking for doesn't exist or may have been removed.
           </p>
         </div>
         
-        <div className="flex flex-col sm:flex-row gap-4 justify-center">
+        <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
           <button
             onClick={() => navigate('/apps')}
-            className="bg-[#7C3AED] text-white px-6 py-3 rounded-lg font-semibold hover:bg-[#6D28D9] transition-colors duration-300"
+            className="bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white px-6 py-3 rounded-lg font-semibold shadow-sm hover:shadow-md transition-all duration-200 w-full sm:w-auto"
           >
             Browse All Apps
           </button>
           <button
             onClick={() => navigate('/')}
-            className="bg-gray-600 text-white px-6 py-3 rounded-lg font-semibold hover:bg-gray-700 transition-colors duration-300"
+            className="bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white px-6 py-3 rounded-lg font-semibold shadow-sm hover:shadow-md transition-all duration-200 w-full sm:w-auto"
           >
             Go Home
           </button>
