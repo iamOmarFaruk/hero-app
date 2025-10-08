@@ -24,14 +24,33 @@ function AppDetails() {
 
   useEffect(() => {
     if (!dataLoading) {
-      const foundApp = getAppById(parseInt(id))
+      const appId = parseInt(id)
+      const foundApp = getAppById(appId)
       console.log('Found app:', foundApp) // Debug log
-      setApp(foundApp)
       
       // Check if app is already installed
-      if (foundApp) {
-        const installedApps = JSON.parse(localStorage.getItem('installedApps') || '[]')
-        setIsInstalled(installedApps.includes(foundApp.id))
+      const installedApps = JSON.parse(localStorage.getItem('installedApps') || '[]')
+      const isAppInstalled = installedApps.includes(appId)
+      setIsInstalled(isAppInstalled)
+      
+      // If app is installed, get data from localStorage
+      if (isAppInstalled) {
+        const installedAppsData = JSON.parse(localStorage.getItem('installedAppsData') || '{}')
+        const storedAppData = installedAppsData[appId]
+        
+        if (storedAppData) {
+          // Merge the stored data with the description from the current app
+          const mergedAppData = {
+            ...storedAppData,
+            description: foundApp?.description || ''
+          }
+          setApp(mergedAppData)
+          console.log('Using app data from localStorage:', mergedAppData)
+        } else {
+          setApp(foundApp)
+        }
+      } else {
+        setApp(foundApp)
       }
     }
   }, [id, getAppById, dataLoading])
@@ -41,10 +60,30 @@ function AppDetails() {
   const handleInstall = () => {
     if (!app || isInstalled) return
 
-    // Add to localStorage
+    // Track installed app IDs
     const installedApps = JSON.parse(localStorage.getItem('installedApps') || '[]')
     installedApps.push(app.id)
     localStorage.setItem('installedApps', JSON.stringify(installedApps))
+    
+    // Store complete app data (except description)
+    const appData = {
+      id: app.id,
+      title: app.title,
+      companyName: app.companyName,
+      image: app.image,
+      size: app.size,
+      reviews: app.reviews,
+      ratingAvg: app.ratingAvg,
+      downloads: app.downloads,
+      isFeature: app.isFeature,
+      ratings: app.ratings,
+      installDate: new Date().toISOString()
+    }
+    
+    // Save to localStorage
+    const installedAppsData = JSON.parse(localStorage.getItem('installedAppsData') || '{}')
+    installedAppsData[app.id] = appData
+    localStorage.setItem('installedAppsData', JSON.stringify(installedAppsData))
     
     // Update state
     setIsInstalled(true)
@@ -59,6 +98,8 @@ function AppDetails() {
         fontWeight: '500',
       },
     })
+    
+    console.log(`App "${app.title}" installed and saved to localStorage`)
   }
 
   // Show loader during initial data loading or skeleton time
@@ -105,10 +146,10 @@ function AppDetails() {
                 className={`w-full max-w-xs px-6 py-3 rounded-lg font-semibold text-white transition-all duration-300 ${
                   isInstalled 
                     ? 'bg-gray-400 cursor-not-allowed' 
-                    : 'bg-green-500 hover:bg-green-600 hover:shadow-lg'
+                    : 'bg-green-500 hover:bg-green-600 hover:shadow-lg active:scale-95 cursor-pointer'
                 }`}
               >
-                {isInstalled ? '✓ Installed' : `Install Now (${app.size} MB)`}
+                {isInstalled ? 'Installed' : `Install Now (${app.size} MB)`}
               </button>
             </div>
 
