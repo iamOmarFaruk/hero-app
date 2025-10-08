@@ -2,8 +2,11 @@ import { useState, useMemo, useEffect } from 'react'
 import { useApps } from '../hooks/useApps'
 import AppItem from '../components/AppItem'
 import AppItemSkeleton from '../components/AppItemSkeleton'
+import useDocumentTitle from '../hooks/useDocumentTitle'
 
 function Apps() {
+  useDocumentTitle('Browse Apps')
+  
   const { apps, loading: dataLoading, error, formatDownloadCount } = useApps()
   const [searchTerm, setSearchTerm] = useState('')
   const [showSkeleton, setShowSkeleton] = useState(true)

@@ -1,8 +1,11 @@
 import { useState, useEffect } from 'react'
 import { FaStar, FaDownload } from 'react-icons/fa'
 import { toast, Toaster } from 'react-hot-toast'
+import useDocumentTitle from '../hooks/useDocumentTitle'
 
 function Installation() {
+  useDocumentTitle('My Installed Apps')
+  
   const [installedApps, setInstalledApps] = useState([])
   const [sortBy, setSortBy] = useState('name')
   

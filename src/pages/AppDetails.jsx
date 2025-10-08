@@ -22,6 +22,14 @@ function AppDetails() {
     return () => clearTimeout(timer)
   }, [])
 
+  // Set document title when app data is available
+  useEffect(() => {
+    if (app) {
+      // Use the app name in the title
+      document.title = `${app.title} | HERO.IO`
+    }
+  }, [app])
+
   useEffect(() => {
     if (!dataLoading) {
       const appId = parseInt(id)
