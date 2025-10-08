@@ -156,7 +156,7 @@ function AppDetails() {
             {/* Right: App Info & Stats */}
             <div className="flex-1">
               {/* App Title & Developer */}
-              <h1 className="text-3xl font-bold text-gray-900 mb-2">{app.title}</h1>
+              <h1 className="text-xl md:text-2xl lg:text-3xl font-bold text-gray-900 mb-2">{app.title}</h1>
               <p className="text-sm text-gray-600 mb-6">Developed by <span className="text-blue-600">{app.companyName.toLowerCase()}</span></p>
 
               {/* Stats Row */}
