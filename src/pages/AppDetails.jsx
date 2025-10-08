@@ -8,7 +8,6 @@ import { FaDownload, FaStar, FaUsers, FaArrowLeft } from 'react-icons/fa'
 
 function AppDetails() {
   const { id } = useParams()
-  const navigate = useNavigate()
   const { getAppById, formatDownloadCount, loading: dataLoading } = useApps()
   const [showSkeleton, setShowSkeleton] = useState(true)
   const [app, setApp] = useState(null)
@@ -78,15 +77,6 @@ function AppDetails() {
     <div className="min-h-screen bg-gray-50 py-8">
       <Toaster />
       <div className="mx-auto max-w-5xl px-6 md:px-10">
-        {/* Back Button */}
-        <button
-          onClick={() => navigate(-1)}
-          className="mb-6 flex items-center gap-2 text-[#7C3AED] hover:text-[#6D28D9] transition-colors duration-300"
-        >
-          <FaArrowLeft />
-          <span>Back</span>
-        </button>
-
         {/* Main App Details Card */}
         <div className="bg-white rounded-xl p-8 shadow-sm">
           {/* App Header Section */}
