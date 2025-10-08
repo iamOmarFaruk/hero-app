@@ -1,8 +1,8 @@
 function Facts() {
   return (
-    <section className="bg-[#7C3AED] py-16">
+    <section className="bg-gradient-to-r from-indigo-600 to-purple-600 py-16">
       <div className="mx-auto max-w-6xl px-6 text-center md:px-10">
-        <h2 className="mb-12 text-3xl font-bold text-white md:text-4xl">
+        <h2 className="mb-12 text-2xl font-bold text-white sm:text-3xl md:text-4xl">
           Trusted By Millions, Built For You
         </h2>
         
