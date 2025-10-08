@@ -7,7 +7,7 @@ function Hero() {
       <div className="relative z-10 mx-auto flex max-w-5xl flex-col items-center px-6 pb-0 pt-24 text-center md:px-10">
         <h1 className="max-w-3xl text-4xl font-extrabold leading-tight text-slate-900 sm:text-5xl md:text-6xl">
           <span className="block text-[#0F172A]">We Build</span>
-          <span className="bg-gradient-to-r from-[#6366F1] via-[#8B5CF6] to-[#EC4899] bg-clip-text text-transparent">
+          <span className="bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent">
             Productive
           </span>{' '}
           <span className="text-[#0F172A]">Apps</span>
