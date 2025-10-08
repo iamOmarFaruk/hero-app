@@ -12,6 +12,9 @@ export const AppsProvider = ({ children }) => {
   // Fetch apps data on mount
   useEffect(() => {
     const fetchAppsData = async () => {
+      const startTime = Date.now()
+      const minimumLoadingTime = 1500 // 1.5 seconds minimum
+      
       try {
         setLoading(true)
         setError(null)
@@ -34,7 +37,14 @@ export const AppsProvider = ({ children }) => {
         console.error('Error fetching apps data:', err)
         setError(err.message)
       } finally {
-        setLoading(false)
+        // Calculate remaining time to meet minimum loading duration
+        const elapsedTime = Date.now() - startTime
+        const remainingTime = Math.max(0, minimumLoadingTime - elapsedTime)
+        
+        // Wait for remaining time if needed, then set loading to false
+        setTimeout(() => {
+          setLoading(false)
+        }, remainingTime)
       }
     }
 
@@ -61,17 +71,6 @@ export const AppsProvider = ({ children }) => {
     return apps.find(app => app.id === id)
   }
 
-  const searchApps = (searchTerm) => {
-    if (!searchTerm.trim()) return apps
-    
-    const term = searchTerm.toLowerCase()
-    return apps.filter(app => 
-      app.title.toLowerCase().includes(term) ||
-      app.description.toLowerCase().includes(term) ||
-      app.companyName.toLowerCase().includes(term)
-    )
-  }
-
   // Context value
   const contextValue = {
     // Data
@@ -86,8 +85,7 @@ export const AppsProvider = ({ children }) => {
     
     // Utility functions
     formatDownloadCount,
-    getAppById,
-    searchApps
+    getAppById
   }
 
   return (

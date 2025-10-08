@@ -1,24 +1,28 @@
-import { useState } from 'react'
+import { useState, useMemo } from 'react'
 import { useApps } from '../hooks/useApps'
 import AppItem from '../components/AppItem'
+import AppItemSkeleton from '../components/AppItemSkeleton'
+import GlobalLoader from '../components/GlobalLoader'
 
 function Apps() {
-  const { apps, loading, error, formatDownloadCount, searchApps } = useApps()
+  const { apps, loading, error, formatDownloadCount } = useApps()
   const [searchTerm, setSearchTerm] = useState('')
 
-  // Get filtered apps based on search term
-  const filteredApps = searchTerm.trim() ? searchApps(searchTerm) : apps
-
-  if (loading) {
-    return (
-      <div className="min-h-screen bg-gray-50 py-16">
-        <div className="mx-auto max-w-7xl px-6 md:px-10">
-          <div className="text-center">
-            <div className="text-lg text-gray-600">Loading applications...</div>
-          </div>
-        </div>
-      </div>
+  // Memoized filtered apps for better performance
+  const filteredApps = useMemo(() => {
+    if (!searchTerm.trim()) return apps
+    
+    const term = searchTerm.toLowerCase()
+    return apps.filter(app => 
+      app.title.toLowerCase().includes(term) ||
+      app.description.toLowerCase().includes(term) ||
+      app.companyName.toLowerCase().includes(term)
     )
+  }, [apps, searchTerm])
+
+  // Global loader for initial app loading
+  if (loading) {
+    return <GlobalLoader message="Loading applications..." />
   }
 
   if (error) {

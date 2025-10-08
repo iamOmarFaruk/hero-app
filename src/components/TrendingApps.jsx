@@ -1,5 +1,6 @@
 import { useApps } from '../hooks/useApps'
 import AppItem from './AppItem'
+import AppItemSkeleton from './AppItemSkeleton'
 
 function TrendingApps() {
   const { featuredApps, loading, error, formatDownloadCount } = useApps()
@@ -8,8 +9,26 @@ function TrendingApps() {
     return (
       <section className="bg-gray-50 py-16">
         <div className="mx-auto max-w-7xl px-6 md:px-10">
+          {/* Section Header */}
+          <div className="mb-12 text-center">
+            <h2 className="mb-4 text-3xl font-bold text-gray-900 md:text-4xl">
+              Trending Apps
+            </h2>
+            <p className="text-gray-600">
+              Explore All Trending Apps on the Market developed by us
+            </p>
+          </div>
+
+          {/* Skeleton Grid */}
+          <div className="mb-12 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
+            {Array.from({ length: 8 }).map((_, index) => (
+              <AppItemSkeleton key={index} />
+            ))}
+          </div>
+
+          {/* Show All Button Skeleton */}
           <div className="text-center">
-            <div className="text-lg text-gray-600">Loading trending apps...</div>
+            <div className="inline-block h-12 w-24 bg-gray-200 rounded-lg animate-pulse"></div>
           </div>
         </div>
       </section>
