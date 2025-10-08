@@ -115,12 +115,12 @@ function Installation() {
         </div>
 
         {installedApps.length > 0 ? (
-          <div className="space-y-4">
+          <div className="space-y-6">
             {sortedApps.map(app => (
-              <div key={app.id} className="bg-white rounded-lg p-4 shadow-sm flex items-center justify-between">
-                <div className="flex items-center">
+              <div key={app.id} className="bg-white rounded-xl p-4 sm:p-6 shadow-md flex flex-col sm:flex-row items-start sm:items-center sm:justify-between gap-4 sm:gap-0">
+                <div className="flex items-center w-full">
                   {/* App Icon */}
-                  <div className="h-16 w-16 rounded-lg bg-gray-200 overflow-hidden mr-4">
+                  <div className="h-16 w-16 rounded-xl bg-gray-200 overflow-hidden mr-4 flex-shrink-0">
                     {app.image ? (
                       <img 
                         src={app.image} 
@@ -135,9 +135,9 @@ function Installation() {
                   </div>
                   
                   {/* App Info */}
-                  <div>
-                    <h3 className="font-medium text-gray-900">{app.title}</h3>
-                    <div className="flex items-center gap-6 mt-1 text-sm">
+                  <div className="flex-1 min-w-0">
+                    <h3 className="font-bold text-gray-900 text-base sm:text-lg mb-1 break-words pr-2">{app.title}</h3>
+                    <div className="flex flex-wrap items-center gap-x-4 gap-y-2 text-sm">
                       <div className="flex items-center text-gray-600">
                         <FaDownload className="text-green-500 mr-1" />
                         <span>{formatDownloadCount(app.downloads)}</span>
@@ -146,7 +146,7 @@ function Installation() {
                         <FaStar className="text-orange-400 mr-1" />
                         <span>{app.ratingAvg}</span>
                       </div>
-                      <div className="text-gray-600">
+                      <div className="text-gray-600 font-medium">
                         {app.size} MB
                       </div>
                     </div>
@@ -156,7 +156,7 @@ function Installation() {
                 {/* Uninstall Button */}
                 <button
                   onClick={() => handleUninstall(app)}
-                  className="px-4 py-2 bg-green-500 hover:bg-green-600 text-white font-medium rounded-lg transition-colors duration-200"
+                  className="w-full sm:w-auto px-6 py-3 bg-green-500 hover:bg-green-600 text-white font-medium rounded-xl transition-colors duration-200 text-center flex-shrink-0"
                 >
                   Uninstall
                 </button>
@@ -164,8 +164,8 @@ function Installation() {
             ))}
           </div>
         ) : (
-          <div className="py-12 text-center">
-            <div className="text-8xl mb-4">📱</div>
+          <div className="py-12 text-center bg-white rounded-xl shadow-md px-6">
+            <div className="text-7xl md:text-8xl mb-4">📱</div>
             <h2 className="text-2xl font-bold text-gray-800 mb-4">No Apps Installed</h2>
             <p className="text-lg text-gray-600">
               You haven't installed any apps yet. Browse our collection and install some apps.
