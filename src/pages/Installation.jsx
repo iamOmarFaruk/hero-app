@@ -1,48 +1,177 @@
+import { useState, useEffect } from 'react'
+import { FaStar, FaDownload } from 'react-icons/fa'
+import { toast, Toaster } from 'react-hot-toast'
+
 function Installation() {
+  const [installedApps, setInstalledApps] = useState([])
+  const [sortBy, setSortBy] = useState('name')
+  
+  useEffect(() => {
+    loadInstalledApps()
+  }, [])
+  
+  const loadInstalledApps = () => {
+    // Get installed app IDs
+    const installedAppIds = JSON.parse(localStorage.getItem('installedApps') || '[]')
+    
+    // Get detailed app data
+    const appsData = JSON.parse(localStorage.getItem('installedAppsData') || '{}')
+    
+    // Convert to array of apps
+    const appsList = installedAppIds
+      .filter(id => appsData[id]) // Only include apps that have data
+      .map(id => appsData[id])
+      
+    setInstalledApps(appsList)
+  }
+  
+  const handleUninstall = (app) => {
+    // Remove from installedApps array
+    const installedAppIds = JSON.parse(localStorage.getItem('installedApps') || '[]')
+    const updatedAppIds = installedAppIds.filter(id => id !== app.id)
+    localStorage.setItem('installedApps', JSON.stringify(updatedAppIds))
+    
+    // Remove from installedAppsData object
+    const appsData = JSON.parse(localStorage.getItem('installedAppsData') || '{}')
+    delete appsData[app.id]
+    localStorage.setItem('installedAppsData', JSON.stringify(appsData))
+    
+    // Update state
+    loadInstalledApps()
+    
+    // Show success toast
+    toast.success(`${app.title} uninstalled successfully!`, {
+      duration: 3000,
+      position: 'top-center',
+      style: {
+        background: '#10B981',
+        color: 'white',
+        fontWeight: '500',
+      },
+    })
+  }
+  
+  const formatDownloadCount = (downloads) => {
+    if (downloads >= 1000000) {
+      return Math.floor(downloads / 100000) / 10 + 'M'
+    }
+    if (downloads >= 1000) {
+      return Math.floor(downloads / 100) / 10 + 'K'
+    }
+    return downloads.toString()
+  }
+  
+  const sortedApps = [...installedApps].sort((a, b) => {
+    switch(sortBy) {
+      case 'name':
+        return a.title.localeCompare(b.title)
+      case 'size':
+        return a.size - b.size
+      case 'rating':
+        return b.ratingAvg - a.ratingAvg
+      default:
+        return 0
+    }
+  })
+
   return (
-    <div className="flex flex-col items-center justify-center py-20 bg-purple-50">
-      <div className="text-center max-w-4xl px-6">
-        <h1 className="text-4xl font-bold text-purple-900 mb-4">Installation Guide</h1>
-        <p className="text-lg text-purple-700 mb-8">
-          Follow these simple steps to get started with Hero.io
-        </p>
-        
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-8">
-          <div className="bg-white p-6 rounded-lg shadow-md">
-            <h3 className="text-xl font-semibold text-gray-800 mb-3">Step 1: Install CLI</h3>
-            <div className="bg-gray-100 p-3 rounded font-mono text-sm">
-              npm install -g hero-cli
-            </div>
-          </div>
-          
-          <div className="bg-white p-6 rounded-lg shadow-md">
-            <h3 className="text-xl font-semibold text-gray-800 mb-3">Step 2: Initialize Project</h3>
-            <div className="bg-gray-100 p-3 rounded font-mono text-sm">
-              hero init my-project
-            </div>
-          </div>
-          
-          <div className="bg-white p-6 rounded-lg shadow-md">
-            <h3 className="text-xl font-semibold text-gray-800 mb-3">Step 3: Start Development</h3>
-            <div className="bg-gray-100 p-3 rounded font-mono text-sm">
-              hero dev
-            </div>
-          </div>
-          
-          <div className="bg-white p-6 rounded-lg shadow-md">
-            <h3 className="text-xl font-semibold text-gray-800 mb-3">Step 4: Deploy</h3>
-            <div className="bg-gray-100 p-3 rounded font-mono text-sm">
-              hero deploy
-            </div>
-          </div>
-        </div>
-        
-        <div className="mt-12">
-          <h2 className="text-2xl font-bold text-purple-900 mb-4">Need Help?</h2>
-          <p className="text-purple-700">
-            Check out our documentation or join our community for support.
+    <div className="min-h-screen bg-gray-50 py-16">
+      <Toaster />
+      <div className="mx-auto max-w-7xl px-6 md:px-10">
+        {/* Page Header */}
+        <div className="mb-12 text-center">
+          <h1 className="mb-4 text-3xl font-bold text-gray-900 md:text-4xl">
+            Your Installed Apps
+          </h1>
+          <p className="text-gray-600">
+            Explore All Trending Apps on the Market developed by us
           </p>
         </div>
+
+        {/* Apps Count and Sort */}
+        <div className="mb-8 flex flex-col items-center justify-between gap-4 sm:flex-row">
+          {/* Apps Count */}
+          <div className="text-lg font-medium text-gray-900">
+            {installedApps.length} {installedApps.length === 1 ? 'App' : 'Apps'} Found
+          </div>
+
+          {/* Sort Dropdown */}
+          <div className="relative">
+            <select
+              value={sortBy}
+              onChange={(e) => setSortBy(e.target.value)}
+              className="rounded-lg border border-gray-300 bg-white px-4 py-2 pr-8 text-gray-900 appearance-none focus:border-[#7C3AED] focus:outline-none focus:ring-1 focus:ring-[#7C3AED]"
+            >
+              <option value="name">Sort By Name</option>
+              <option value="size">Sort By Size</option>
+              <option value="rating">Sort By Rating</option>
+            </select>
+            <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
+              <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7"></path>
+              </svg>
+            </div>
+          </div>
+        </div>
+
+        {installedApps.length > 0 ? (
+          <div className="space-y-4">
+            {sortedApps.map(app => (
+              <div key={app.id} className="bg-white rounded-lg p-4 shadow-sm flex items-center justify-between">
+                <div className="flex items-center">
+                  {/* App Icon */}
+                  <div className="h-16 w-16 rounded-lg bg-gray-200 overflow-hidden mr-4">
+                    {app.image ? (
+                      <img 
+                        src={app.image} 
+                        alt={app.title}
+                        className="h-full w-full object-cover"
+                      />
+                    ) : (
+                      <div className="h-full w-full bg-gray-200 flex items-center justify-center text-gray-400">
+                        📱
+                      </div>
+                    )}
+                  </div>
+                  
+                  {/* App Info */}
+                  <div>
+                    <h3 className="font-medium text-gray-900">{app.title}</h3>
+                    <div className="flex items-center gap-6 mt-1 text-sm">
+                      <div className="flex items-center text-gray-600">
+                        <FaDownload className="text-green-500 mr-1" />
+                        <span>{formatDownloadCount(app.downloads)}</span>
+                      </div>
+                      <div className="flex items-center text-gray-600">
+                        <FaStar className="text-orange-400 mr-1" />
+                        <span>{app.ratingAvg}</span>
+                      </div>
+                      <div className="text-gray-600">
+                        {app.size} MB
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                
+                {/* Uninstall Button */}
+                <button
+                  onClick={() => handleUninstall(app)}
+                  className="px-4 py-2 bg-green-500 hover:bg-green-600 text-white font-medium rounded-lg transition-colors duration-200"
+                >
+                  Uninstall
+                </button>
+              </div>
+            ))}
+          </div>
+        ) : (
+          <div className="py-12 text-center">
+            <div className="text-8xl mb-4">📱</div>
+            <h2 className="text-2xl font-bold text-gray-800 mb-4">No Apps Installed</h2>
+            <p className="text-lg text-gray-600">
+              You haven't installed any apps yet. Browse our collection and install some apps.
+            </p>
+          </div>
+        )}
       </div>
     </div>
   )
