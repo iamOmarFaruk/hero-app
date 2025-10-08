@@ -1,37 +1,13 @@
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
+import { useApps } from '../hooks/useApps'
 import AppItem from '../components/AppItem'
 
 function Apps() {
-  const [apps, setApps] = useState([])
-  const [loading, setLoading] = useState(true)
+  const { apps, loading, error, formatDownloadCount, searchApps } = useApps()
   const [searchTerm, setSearchTerm] = useState('')
 
-  useEffect(() => {
-    const fetchAppsData = async () => {
-      try {
-        const response = await fetch('/apps-data.json')
-        const appsData = await response.json()
-        setApps(appsData)
-      } catch (error) {
-        console.error('Error fetching apps data:', error)
-      } finally {
-        setLoading(false)
-      }
-    }
-
-    fetchAppsData()
-  }, [])
-
-  // Format download count for display
-  const formatDownloadCount = (downloads) => {
-    if (downloads >= 1000000) {
-      return Math.floor(downloads / 100000) / 10 + 'M'
-    }
-    if (downloads >= 1000) {
-      return Math.floor(downloads / 100) / 10 + 'K'
-    }
-    return downloads.toString()
-  }
+  // Get filtered apps based on search term
+  const filteredApps = searchTerm.trim() ? searchApps(searchTerm) : apps
 
   if (loading) {
     return (
@@ -39,6 +15,18 @@ function Apps() {
         <div className="mx-auto max-w-7xl px-6 md:px-10">
           <div className="text-center">
             <div className="text-lg text-gray-600">Loading applications...</div>
+          </div>
+        </div>
+      </div>
+    )
+  }
+
+  if (error) {
+    return (
+      <div className="min-h-screen bg-gray-50 py-16">
+        <div className="mx-auto max-w-7xl px-6 md:px-10">
+          <div className="text-center">
+            <div className="text-lg text-red-600">Error loading applications: {error}</div>
           </div>
         </div>
       </div>
@@ -62,7 +50,7 @@ function Apps() {
         <div className="mb-8 flex flex-col items-center justify-between gap-4 sm:flex-row">
           {/* Apps Count */}
           <div className="text-lg font-medium text-gray-900">
-            ({apps.length}) Apps Found
+            ({filteredApps.length}) Apps Found
           </div>
 
           {/* Search Input */}
@@ -94,7 +82,7 @@ function Apps() {
 
         {/* Apps Grid */}
         <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
-          {apps.map((app) => (
+          {filteredApps.map((app) => (
             <AppItem
               key={app.id}
               title={app.title}
@@ -106,9 +94,11 @@ function Apps() {
         </div>
 
         {/* No Results Message */}
-        {apps.length === 0 && !loading && (
+        {filteredApps.length === 0 && !loading && (
           <div className="py-12 text-center">
-            <p className="text-lg text-gray-600">No applications found.</p>
+            <p className="text-lg text-gray-600">
+              {searchTerm.trim() ? `No apps found for "${searchTerm}"` : 'No applications found.'}
+            </p>
           </div>
         )}
       </div>

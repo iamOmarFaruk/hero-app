@@ -1,39 +1,8 @@
-import { useState, useEffect } from 'react'
+import { useApps } from '../hooks/useApps'
 import AppItem from './AppItem'
 
 function TrendingApps() {
-  const [featuredApps, setFeaturedApps] = useState([])
-  const [loading, setLoading] = useState(true)
-
-  useEffect(() => {
-    const fetchAppsData = async () => {
-      try {
-        const response = await fetch('/apps-data.json')
-        const appsData = await response.json()
-        
-        // Filter only featured apps
-        const featured = appsData.filter(app => app.isFeature === true)
-        setFeaturedApps(featured)
-      } catch (error) {
-        console.error('Error fetching apps data:', error)
-      } finally {
-        setLoading(false)
-      }
-    }
-
-    fetchAppsData()
-  }, [])
-
-  // Format download count for display
-  const formatDownloadCount = (downloads) => {
-    if (downloads >= 1000000) {
-      return Math.floor(downloads / 100000) / 10 + 'M'
-    }
-    if (downloads >= 1000) {
-      return Math.floor(downloads / 100) / 10 + 'K'
-    }
-    return downloads.toString()
-  }
+  const { featuredApps, loading, error, formatDownloadCount } = useApps()
 
   if (loading) {
     return (
@@ -41,6 +10,18 @@ function TrendingApps() {
         <div className="mx-auto max-w-7xl px-6 md:px-10">
           <div className="text-center">
             <div className="text-lg text-gray-600">Loading trending apps...</div>
+          </div>
+        </div>
+      </section>
+    )
+  }
+
+  if (error) {
+    return (
+      <section className="bg-gray-50 py-16">
+        <div className="mx-auto max-w-7xl px-6 md:px-10">
+          <div className="text-center">
+            <div className="text-lg text-red-600">Error loading apps: {error}</div>
           </div>
         </div>
       </section>
