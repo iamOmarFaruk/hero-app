@@ -154,7 +154,7 @@ function AppDetails() {
                 className={`w-full max-w-xs px-6 py-3 rounded-lg font-semibold text-white transition-all duration-300 ${
                   isInstalled 
                     ? 'bg-gray-400 cursor-not-allowed' 
-                    : 'bg-green-500 hover:bg-green-600 hover:shadow-lg active:scale-95 cursor-pointer'
+                    : 'bg-[#00D390] hover:bg-[#00BB82] hover:shadow-lg active:scale-95 cursor-pointer'
                 }`}
               >
                 {isInstalled ? 'Installed' : `Install Now (${app.size} MB)`}

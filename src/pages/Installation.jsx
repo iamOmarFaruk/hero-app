@@ -159,7 +159,7 @@ function Installation() {
                 {/* Uninstall Button */}
                 <button
                   onClick={() => handleUninstall(app)}
-                  className="w-full sm:w-auto px-6 py-3 bg-green-500 hover:bg-green-600 text-white font-medium rounded-xl transition-colors duration-200 text-center flex-shrink-0"
+                  className="w-full sm:w-auto px-6 py-3 bg-[#00D390] hover:bg-[#00BB82] text-white font-medium rounded-xl transition-colors duration-200 text-center flex-shrink-0 cursor-pointer"
                 >
                   Uninstall
                 </button>
