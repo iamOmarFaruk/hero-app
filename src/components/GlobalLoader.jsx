@@ -1,6 +1,6 @@
 function GlobalLoader({ message = "Loading..." }) {
   return (
-    <div className="fixed inset-0 bg-white bg-opacity-95 backdrop-blur-sm z-50 flex items-center justify-center">
+    <div className="fixed inset-0 top-16 bg-white bg-opacity-95 backdrop-blur-sm z-40 flex items-center justify-center">
       <div className="text-center">
         {/* Spinning Circle with gradient */}
         <div className="relative inline-block mb-6">
