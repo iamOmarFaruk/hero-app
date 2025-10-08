@@ -16,10 +16,10 @@ export const PageLoadingProvider = ({ children }) => {
     // Start page loading
     setIsPageLoading(true)
 
-    // Professional loading time (1.2 seconds)
+    // Professional loading time (1 second)
     const timer = setTimeout(() => {
       setIsPageLoading(false)
-    }, 1200)
+    }, 1000)
 
     return () => clearTimeout(timer)
   }, [location.pathname])
