@@ -2,7 +2,7 @@ import { Link } from 'react-router-dom'
 
 function Apps() {
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen bg-blue-50">
+    <div className="flex flex-col items-center justify-center py-20 bg-blue-50">
       <div className="text-center">
         <h1 className="text-4xl font-bold text-blue-900 mb-4">Apps Page</h1>
         <p className="text-lg text-blue-700 mb-8">Here you can find all available applications</p>
