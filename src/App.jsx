@@ -7,6 +7,7 @@ import Footer from './components/Footer'
 import GlobalLoader from './components/GlobalLoader'
 import Home from './pages/Home'
 import Apps from './pages/Apps'
+import AppDetails from './pages/AppDetails'
 import Installation from './pages/Installation'
 import NotFound from './pages/NotFound'
 
@@ -26,6 +27,7 @@ function AppContent() {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/apps" element={<Apps />} />
+          <Route path="/app/:id" element={<AppDetails />} />
           <Route path="/installation" element={<Installation />} />
           <Route path="*" element={<NotFound />} />
         </Routes>

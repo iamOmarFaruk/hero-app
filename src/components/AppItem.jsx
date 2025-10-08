@@ -1,14 +1,25 @@
-function AppItem({ title, image, downloadCount, rating }) {
+import { useNavigate } from 'react-router-dom'
+
+function AppItem({ id, title, image, downloadCount, rating }) {
+  const navigate = useNavigate()
+
+  const handleClick = () => {
+    navigate(`/app/${id}`)
+  }
+
   return (
-    <div className="rounded-lg bg-white p-6 shadow-sm transition-shadow hover:shadow-md">
+    <div 
+      onClick={handleClick}
+      className="rounded-lg bg-white p-6 shadow-sm transition-all duration-300 hover:shadow-md hover:-translate-y-1 cursor-pointer group"
+    >
       {/* App Image */}
       <div className="mb-4 flex justify-center">
-        <div className="h-32 w-32 rounded-lg bg-gray-200 flex items-center justify-center">
+        <div className="h-32 w-32 rounded-lg bg-gray-200 flex items-center justify-center overflow-hidden">
           {image ? (
             <img 
               src={image} 
               alt={title}
-              className="h-full w-full rounded-lg object-cover"
+              className="h-full w-full rounded-lg object-cover transition-transform duration-300 group-hover:scale-105"
             />
           ) : (
             <div className="h-full w-full rounded-lg bg-gray-200"></div>
@@ -17,7 +28,7 @@ function AppItem({ title, image, downloadCount, rating }) {
       </div>
 
       {/* App Title */}
-      <h3 className="mb-3 text-center text-sm font-medium text-gray-900 leading-tight">
+      <h3 className="mb-3 text-center text-sm font-medium text-gray-900 leading-tight group-hover:text-[#7C3AED] transition-colors duration-300">
         {title}
       </h3>
 

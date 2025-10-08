@@ -119,6 +119,7 @@ function Apps() {
             currentApps.map((app) => (
               <AppItem
                 key={app.id}
+                id={app.id}
                 title={app.title}
                 image={app.image}
                 downloadCount={formatDownloadCount(app.downloads)}
