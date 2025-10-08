@@ -8,7 +8,7 @@ HERO.IO is a showcase platform for productivity-enhancing mobile applications. W
 
 ## 🌟 Live Demo
 
-Check out the live version of HERO.IO [here](https://hero-io.vercel.app).
+Check out the live version of HERO.IO [here](https://hero-app-three.vercel.app/).
 
 ## ✨ Features
 
@@ -114,33 +114,12 @@ Check out the live version of HERO.IO [here](https://hero-io.vercel.app).
 - `npm run lint` - Run ESLint for code quality checks
 - `npm run preview` - Preview production build locally
 
-## 📈 Future Enhancements
-
-- User authentication system
-- User reviews and ratings
-- App categories and improved filtering
-- Dark mode theme option
-- PWA support for offline use
-
-## 🤝 Contributing
-
-Contributions are always welcome! Feel free to open issues or submit pull requests to improve HERO.IO.
-
-1. Fork the repository
-2. Create your feature branch: `git checkout -b feature/amazing-feature`
-3. Commit your changes: `git commit -m 'Add some amazing feature'`
-4. Push to the branch: `git push origin feature/amazing-feature`
-5. Open a pull request
-
-## 📝 License
-
-This project is licensed under the MIT License - see the LICENSE file for details.
 
 ## 📞 Contact
 
 Got questions or suggestions? Reach out to me at:
 
-- GitHub: [iamOmarFaruk](https://github.com/iamOmarFaruk)
+- GitHub: [iamOmarFaruk](https://www.linkedin.com/in/omar-expert-webdeveloper/)
 
 ---
 
