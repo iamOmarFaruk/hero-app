@@ -1,12 +1,36 @@
-import { useState, useMemo } from 'react'
+import { useState, useMemo, useEffect } from 'react'
 import { useApps } from '../hooks/useApps'
 import AppItem from '../components/AppItem'
 import AppItemSkeleton from '../components/AppItemSkeleton'
-import GlobalLoader from '../components/GlobalLoader'
 
 function Apps() {
-  const { apps, loading, error, formatDownloadCount } = useApps()
+  const { apps, loading: dataLoading, error, formatDownloadCount } = useApps()
   const [searchTerm, setSearchTerm] = useState('')
+  const [showSkeleton, setShowSkeleton] = useState(true)
+  const [searchLoading, setSearchLoading] = useState(false)
+
+  // Initial page skeleton loading
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setShowSkeleton(false)
+    }, 1500) // 1.5 seconds initial skeleton
+
+    return () => clearTimeout(timer)
+  }, [])
+
+  // Search with skeleton loading
+  useEffect(() => {
+    if (searchTerm.trim()) {
+      setSearchLoading(true)
+      const searchTimer = setTimeout(() => {
+        setSearchLoading(false)
+      }, 800) // 800ms search skeleton
+
+      return () => clearTimeout(searchTimer)
+    } else {
+      setSearchLoading(false)
+    }
+  }, [searchTerm])
 
   // Memoized filtered apps for better performance
   const filteredApps = useMemo(() => {
@@ -20,10 +44,9 @@ function Apps() {
     )
   }, [apps, searchTerm])
 
-  // Global loader for initial app loading
-  if (loading) {
-    return <GlobalLoader message="Loading applications..." />
-  }
+  // Determine what to show
+  const shouldShowSkeleton = showSkeleton || dataLoading || searchLoading
+  const currentApps = searchTerm.trim() ? filteredApps : apps
 
   if (error) {
     return (
@@ -54,7 +77,7 @@ function Apps() {
         <div className="mb-8 flex flex-col items-center justify-between gap-4 sm:flex-row">
           {/* Apps Count */}
           <div className="text-lg font-medium text-gray-900">
-            ({filteredApps.length}) Apps Found
+            ({shouldShowSkeleton ? '...' : currentApps.length}) Apps Found
           </div>
 
           {/* Search Input */}
@@ -86,19 +109,27 @@ function Apps() {
 
         {/* Apps Grid */}
         <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
-          {filteredApps.map((app) => (
-            <AppItem
-              key={app.id}
-              title={app.title}
-              image={app.image}
-              downloadCount={formatDownloadCount(app.downloads)}
-              rating={app.ratingAvg.toString()}
-            />
-          ))}
+          {shouldShowSkeleton ? (
+            // Show skeleton items
+            Array.from({ length: 20 }).map((_, index) => (
+              <AppItemSkeleton key={`skeleton-${index}`} />
+            ))
+          ) : (
+            // Show real apps
+            currentApps.map((app) => (
+              <AppItem
+                key={app.id}
+                title={app.title}
+                image={app.image}
+                downloadCount={formatDownloadCount(app.downloads)}
+                rating={app.ratingAvg.toString()}
+              />
+            ))
+          )}
         </div>
 
         {/* No Results Message */}
-        {filteredApps.length === 0 && !loading && (
+        {!shouldShowSkeleton && currentApps.length === 0 && (
           <div className="py-12 text-center">
             <p className="text-lg text-gray-600">
               {searchTerm.trim() ? `No apps found for "${searchTerm}"` : 'No applications found.'}
