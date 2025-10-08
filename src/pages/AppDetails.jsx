@@ -74,13 +74,6 @@ function AppDetails() {
 
   const totalRatings = app.ratings.reduce((sum, rating) => sum + rating.count, 0)
 
-  // Prepare chart data for Recharts
-  const chartData = app.ratings.map((rating, index) => ({
-    star: `${5 - index} star`,
-    count: rating.count,
-    percentage: Math.round((rating.count / totalRatings) * 100)
-  })).reverse()
-
   return (
     <div className="min-h-screen bg-gray-50 py-8">
       <Toaster />
@@ -125,53 +118,43 @@ function AppDetails() {
                     : 'bg-green-500 hover:bg-green-600 hover:shadow-lg'
                 }`}
               >
-                {isInstalled ? '✓ Installed' : `Install Now`}
+                {isInstalled ? '✓ Installed' : `Install Now (${app.size} MB)`}
               </button>
-              
-              {/* App Size Info */}
-              <div className="text-center mt-2 text-sm text-gray-500">
-                {app.size} MB • Free
-                {!isInstalled && (
-                  <div className="text-xs text-green-600 mt-1">
-                    Fast download • No ads
-                  </div>
-                )}
-              </div>
             </div>
 
             {/* Right: App Info & Stats */}
             <div className="flex-1">
               {/* App Title & Developer */}
               <h1 className="text-3xl font-bold text-gray-900 mb-2">{app.title}</h1>
-              <p className="text-lg text-blue-600 mb-6">Developed by {app.companyName.toLowerCase()}</p>
+              <p className="text-sm text-gray-600 mb-6">Developed by <span className="text-blue-600">{app.companyName.toLowerCase()}</span></p>
 
               {/* Stats Row */}
-              <div className="grid grid-cols-3 gap-8 mb-6">
+              <div className="flex flex-row gap-8 mb-6">
                 {/* Downloads */}
-                <div className="text-center">
-                  <div className="flex justify-center mb-2">
-                    <FaDownload className="text-green-500 text-xl" />
+                <div className="flex flex-col items-center">
+                  <div className="text-green-500 mb-1">
+                    <FaDownload className="text-xl" />
                   </div>
-                  <div className="text-2xl font-bold text-gray-900">{formatDownloadCount(app.downloads)}</div>
-                  <div className="text-sm text-gray-500">Downloads</div>
+                  <div className="text-xl font-bold">{formatDownloadCount(app.downloads)}</div>
+                  <div className="text-xs text-gray-500">Downloads</div>
                 </div>
 
                 {/* Rating */}
-                <div className="text-center">
-                  <div className="flex justify-center mb-2">
-                    <FaStar className="text-orange-400 text-xl" />
+                <div className="flex flex-col items-center">
+                  <div className="text-orange-400 mb-1">
+                    <FaStar className="text-xl" />
                   </div>
-                  <div className="text-2xl font-bold text-gray-900">{app.ratingAvg}</div>
-                  <div className="text-sm text-gray-500">Star Ratings</div>
+                  <div className="text-xl font-bold">{app.ratingAvg}</div>
+                  <div className="text-xs text-gray-500">Average Rating</div>
                 </div>
 
                 {/* Reviews */}
-                <div className="text-center">
-                  <div className="flex justify-center mb-2">
-                    <FaUsers className="text-blue-500 text-xl" />
+                <div className="flex flex-col items-center">
+                  <div className="text-purple-500 mb-1">
+                    <FaUsers className="text-xl" />
                   </div>
-                  <div className="text-2xl font-bold text-gray-900">{(totalRatings/1000).toFixed(0)}K</div>
-                  <div className="text-sm text-gray-500">User Reviews</div>
+                  <div className="text-xl font-bold">{(totalRatings/1000).toFixed(0)}K</div>
+                  <div className="text-xs text-gray-500">Total Reviews</div>
                 </div>
               </div>
             </div>
@@ -179,45 +162,36 @@ function AppDetails() {
 
           {/* Ratings Section */}
           <div className="mb-8">
-            <h2 className="text-xl font-bold text-gray-900 mb-6">User Ratings & Feedback</h2>
-            
-            {/* Rating Summary */}
-            <div className="bg-gray-50 p-4 rounded-lg mb-6">
-              <div className="flex items-center justify-between">
-                <div>
-                  <div className="text-3xl font-bold text-gray-900">{app.ratingAvg}</div>
-                  <div className="text-sm text-gray-600">out of 5 stars</div>
-                  <div className="text-sm text-gray-500">{totalRatings.toLocaleString()} total ratings</div>
-                </div>
-                <div className="text-right">
-                  <div className="text-sm text-gray-600">Quality Rating</div>
-                  <div className="text-lg font-semibold text-purple-600">
-                    {app.ratingAvg >= 4.5 ? "Excellent" : 
-                     app.ratingAvg >= 4.0 ? "Very Good" :
-                     app.ratingAvg >= 3.5 ? "Good" : "Fair"}
+            <h3 className="text-lg font-semibold text-gray-900 mb-4">Ratings</h3>
+
+            {/* Rating Chart */}
+            <div>
+              {/* Using custom HTML instead of Recharts to ensure it displays correctly */}
+              {app.ratings.slice().reverse().map((rating, index) => (
+                <div key={index} className="flex items-center mb-2">
+                  <div className="w-12 text-sm text-gray-600">{rating.name}</div>
+                  <div className="flex-1 px-2">
+                    <div className="relative h-5">
+                      <div 
+                        className="absolute top-0 left-0 h-5 bg-orange-400 rounded-r" 
+                        style={{ 
+                          width: `${(rating.count / 12000) * 100}%`,
+                          maxWidth: '100%' 
+                        }}
+                      ></div>
+                    </div>
                   </div>
                 </div>
+              ))}
+              
+              {/* Chart Scale */}
+              <div className="flex justify-between text-xs text-gray-500 mt-4 pl-14">
+                <span>0</span>
+                <span>3000</span>
+                <span>6000</span>
+                <span>9000</span>
+                <span>12000</span>
               </div>
-            </div>
-            
-            {/* Rating Chart */}
-            <div className="h-64 mb-6">
-              <ResponsiveContainer width="100%" height="100%">
-                <BarChart data={chartData} layout="horizontal">
-                  <XAxis type="number" domain={[0, 'dataMax']} />
-                  <YAxis type="category" dataKey="star" width={60} />
-                  <Bar dataKey="count" fill="#8B5CF6" radius={[0, 4, 4, 0]} />
-                </BarChart>
-              </ResponsiveContainer>
-            </div>
-
-            {/* Dynamic Rating Numbers */}
-            <div className="flex justify-between text-sm text-gray-500 px-2">
-              <span>0</span>
-              <span>{Math.round(Math.max(...chartData.map(d => d.count)) * 0.25).toLocaleString()}</span>
-              <span>{Math.round(Math.max(...chartData.map(d => d.count)) * 0.5).toLocaleString()}</span>
-              <span>{Math.round(Math.max(...chartData.map(d => d.count)) * 0.75).toLocaleString()}</span>
-              <span>{Math.max(...chartData.map(d => d.count)).toLocaleString()}</span>
             </div>
           </div>
 
@@ -241,9 +215,9 @@ function AppDetails() {
               {/* Dynamic features based on rating quality */}
               <p>
                 {app.ratingAvg >= 4.5 ? (
-                  `Our users consistently rate ${app.title} as exceptional, with ${Math.round((chartData[4]?.count / totalRatings) * 100)}% giving it 5 stars. `
+                  `Our users consistently rate ${app.title} as exceptional, with ${Math.round((app.ratings[4].count / totalRatings) * 100)}% giving it 5 stars. `
                 ) : app.ratingAvg >= 4.0 ? (
-                  `${app.title} maintains high user satisfaction with ${Math.round((chartData[4]?.count / totalRatings) * 100)}% of users rating it 4+ stars. `
+                  `${app.title} maintains high user satisfaction with ${Math.round((app.ratings[4].count / totalRatings) * 100)}% of users rating it 4+ stars. `
                 ) : (
                   `We're continuously improving ${app.title} based on user feedback. `
                 )}
