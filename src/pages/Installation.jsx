@@ -72,6 +72,10 @@ function Installation() {
         return a.size - b.size
       case 'rating':
         return b.ratingAvg - a.ratingAvg
+      case 'most-downloads':
+        return b.downloads - a.downloads
+      case 'least-downloads':
+        return a.downloads - b.downloads
       default:
         return 0
     }
@@ -108,6 +112,8 @@ function Installation() {
               <option value="name">Sort By Name</option>
               <option value="size">Sort By Size</option>
               <option value="rating">Sort By Rating</option>
+              <option value="most-downloads">Most Downloads</option>
+              <option value="least-downloads">Least Downloads</option>
             </select>
             <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
               <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
