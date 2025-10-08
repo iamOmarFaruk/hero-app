@@ -20,7 +20,9 @@ function Hero() {
 
         <div className="mt-10 flex flex-col items-center gap-4 sm:flex-row">
           <a
-            href="#"
+            href="https://play.google.com/store/apps"
+            target="_blank"
+            rel="noopener noreferrer"
             className="group inline-flex items-center gap-3 rounded-xl border border-slate-200 bg-white px-7 py-4 text-base font-semibold text-slate-900 shadow-[0_28px_60px_-30px_rgba(79,70,229,0.8)] transition duration-300 hover:-translate-y-0.5 hover:border-[#6366F1] hover:shadow-[0_32px_75px_-30px_rgba(99,102,241,0.8)]"
           >
             <FaGooglePlay className="text-xl text-[#22C55E] transition duration-300 group-hover:text-[#16A34A]" />
@@ -28,7 +30,9 @@ function Hero() {
           </a>
 
           <a
-            href="#"
+            href="https://www.apple.com/app-store/"
+            target="_blank"
+            rel="noopener noreferrer"
             className="group inline-flex items-center gap-3 rounded-xl border border-slate-200 bg-white px-7 py-4 text-base font-semibold text-slate-900 shadow-[0_28px_60px_-30px_rgba(15,23,42,0.6)] transition duration-300 hover:-translate-y-0.5 hover:border-[#0EA5E9] hover:shadow-[0_32px_75px_-30px_rgba(14,165,233,0.65)]"
           >
             <FaApple className="text-2xl text-slate-700 transition duration-300 group-hover:text-[#0F172A]" />
