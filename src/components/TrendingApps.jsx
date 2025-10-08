@@ -122,7 +122,7 @@ function TrendingApps() {
           ) : (
             <a
               href="/apps"
-              className="inline-flex items-center rounded-lg bg-[#7C3AED] px-8 py-3 text-base font-semibold text-white transition duration-300 hover:bg-[#6D28D9] hover:shadow-lg"
+              className="inline-flex items-center rounded-lg bg-gradient-to-r from-indigo-600 to-purple-600 px-8 py-3 text-base font-semibold text-white transition duration-300 hover:from-indigo-700 hover:to-purple-700 hover:shadow-lg"
             >
               Show All
             </a>
